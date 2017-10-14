@@ -1,9 +1,10 @@
 bin=bin/Ftp-client
-libs=-lsfml-graphics -lsfml-window -lsfml-system -lsfgui
+libs=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-network -lsfgui
 objs=$(patsubst src/%.cpp,obj/%.o,$(wildcard src/*.cpp))
 flags=-g
 
 all: bin obj $(bin)
+	./$(bin)
 
 bin:
 	mkdir bin
