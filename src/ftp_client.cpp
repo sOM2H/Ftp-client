@@ -20,14 +20,14 @@ void Ftp_client::init(){
 	sfgui_login_window->SetRequisition(sf::Vector2f(SFML_LOGIN_WINDOW_SIZE_WIDTH, SFML_LOGIN_WINDOW_SIZE_HEIGHT));
 	
 	login_entry->SetText("Login");
-	login_entry->SetRequisition(sf::Vector2f(0, 0));
+	login_entry->SetRequisition(sf::Vector2f());
 
 	password_entry->SetText("Password");
 	password_entry->HideText('*');
-	password_entry->SetRequisition(sf::Vector2f(0, 30));
+	password_entry->SetRequisition(sf::Vector2f());
 
 	host_entry->SetText("Host");
-	host_entry->SetRequisition(sf::Vector2f(0, 35));
+	host_entry->SetRequisition(sf::Vector2f());
 
 	auto button = sfg::Button::Create();
 	button->SetLabel("Login");
@@ -77,7 +77,15 @@ void Ftp_client::close(){
 }
 
 void Ftp_client::init_ftp_connection(std::string login, std::string password, std::string host){
-	 ftp.connect(host, 21, sf::seconds(5));
-	 ftp.login(login, password);
-	 printf("OK\n");
+	sf::Ftp::Response response_connect = ftp.connect(host, 21, sf::seconds(5));
+	sf::Ftp::Response response_login  = ftp.login(login, password );
+   	if(response_connect.isOk()){
+		if(response_login.isOk()){
+			std::cout<< "Connect to server: " << host << ".\n" << "Login: " << login << ".\n\n";
+		}else{
+			std::cout<< "Login Error.\n\n";
+		}
+	}else{
+		std::cout<< "Connect Error.\n\n";
+	}	
 }
