@@ -46,7 +46,6 @@ void Ftp_client::init(){
 	sfgui_login_window->SetRequisition(sf::Vector2f(SFML_MAIN_WINDOW_SIZE_WIDTH / 2 - SFML_LOGIN_WINDOW_SIZE_WIDTH / 2, SFML_MAIN_WINDOW_SIZE_HEIGHT/2 - SFML_LOGIN_WINDOW_SIZE_HEIGHT/2));
 	sfgui_login_window->SetPosition(sf::Vector2f(SFML_MAIN_WINDOW_SIZE_WIDTH / 2 - sfgui_login_window->GetRequisition().x/2, SFML_MAIN_WINDOW_SIZE_HEIGHT/2 - sfgui_login_window->GetRequisition().y/2));
 
-	desktop.Add(sfgui_main_window);
 	desktop.Add(sfgui_login_window);
 }
 
@@ -77,16 +76,23 @@ void Ftp_client::close(){
 
 void Ftp_client::init_ftp_connection(std::string login, std::string password, std::string host){
 	sf::Ftp::Response response_connect = ftp.connect(host, 21, sf::seconds(5));
-	sf::Ftp::Response response_login  = ftp.login(login, password );
    	if(response_connect.isOk()){
+		sf::Ftp::Response response_login  = ftp.login(login, password );
 		if(response_login.isOk()){
-			std::cout<< "Connect to server: " << host << ".\n" << "Login: " << login << ".\n\n";
+			std::cout<<"########################\n";
+			std::cout<< "Connect to server: " << host << ".\n" << "	Login: " << login << ".\n";
+			std::cout<<"########################\n\n";
 			state = "main";
+			desktop.Add(sfgui_main_window);
 			desktop.BringToFront( sfgui_main_window ); 
+			return;
 		}else{
 			std::cout<< "Login Error.\n\n";
+
 		}
 	}else{
 		std::cout<< "Connect Error.\n\n";
 	}	
+	ftp.disconnect();
 }
+
