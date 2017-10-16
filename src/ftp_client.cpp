@@ -41,9 +41,13 @@ void Ftp_client::init(){
 	box->Pack(password_entry);
 	box->Pack(host_entry);
 	box->Pack(button);
+
 	sfgui_login_window->Add(box);
 	sfgui_login_window->SetRequisition(sf::Vector2f(SFML_MAIN_WINDOW_SIZE_WIDTH / 2 - SFML_LOGIN_WINDOW_SIZE_WIDTH / 2, SFML_MAIN_WINDOW_SIZE_HEIGHT/2 - SFML_LOGIN_WINDOW_SIZE_HEIGHT/2));
 	sfgui_login_window->SetPosition(sf::Vector2f(SFML_MAIN_WINDOW_SIZE_WIDTH / 2 - sfgui_login_window->GetRequisition().x/2, SFML_MAIN_WINDOW_SIZE_HEIGHT/2 - sfgui_login_window->GetRequisition().y/2));
+
+	desktop.Add(sfgui_main_window);
+	desktop.Add(sfgui_login_window);
 }
 
 void Ftp_client::handle_events(){
@@ -52,17 +56,12 @@ void Ftp_client::handle_events(){
 		if(event.type == sf::Event::Closed || event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape){
 			running = false;
 		}
-		sfgui_main_window->HandleEvent(event);
-		sfgui_login_window->HandleEvent(event);
+		desktop.HandleEvent(event);
 	}
 }
 
 void Ftp_client::render(std::string state){
-	if(state == "login"){
-		sfgui_login_window->Update(0.f);
-	}else if(state == "main"){
-		sfgui_main_window->Update(0.f);
-	}
+	desktop.Update(0.f);
 	sfml_main_window.clear();
 	sfgui.Display(sfml_main_window);
 	sfml_main_window.display();
@@ -82,6 +81,8 @@ void Ftp_client::init_ftp_connection(std::string login, std::string password, st
    	if(response_connect.isOk()){
 		if(response_login.isOk()){
 			std::cout<< "Connect to server: " << host << ".\n" << "Login: " << login << ".\n\n";
+			state = "main";
+			desktop.BringToFront( sfgui_main_window ); 
 		}else{
 			std::cout<< "Login Error.\n\n";
 		}

@@ -24,6 +24,8 @@ class Ftp_client{
 
 		sf::RenderWindow sfml_main_window;
 		sfg::SFGUI sfgui;
+
+		sfg::Desktop desktop;
 		
 		std::string state;
 		
