@@ -20,14 +20,14 @@ void Ftp_client::init(){
 	sfgui_login_window->SetRequisition(sf::Vector2f(SFML_LOGIN_WINDOW_SIZE_WIDTH, SFML_LOGIN_WINDOW_SIZE_HEIGHT));
 
 	
-	login_entry->SetText("Login");
+	//login_entry->SetText("Login");
 	login_entry->SetRequisition(sf::Vector2f());
 
-	password_entry->SetText("Password");
+	//password_entry->SetText("Password");
 	password_entry->HideText('*');
 	password_entry->SetRequisition(sf::Vector2f());
 
-	host_entry->SetText("Host");
+	//host_entry->SetText("Host");
 	host_entry->SetRequisition(sf::Vector2f());
 
 	auto button = sfg::Button::Create();
@@ -36,12 +36,45 @@ void Ftp_client::init(){
 			init_ftp_connection(login_entry->GetText(), password_entry->GetText(), host_entry->GetText());
 	} );
 	
+
 	sfg::Box::Ptr box = sfg::Box::Create(sfg::Box::Orientation::VERTICAL);
 
-	box->Pack(login_entry);
-	box->Pack(password_entry);
-	box->Pack(host_entry);
+	box->SetSpacing(5.f);
+
+	sfg::Box::Ptr box_login = sfg::Box::Create();
+	sfg::Box::Ptr box_password = sfg::Box::Create();
+	sfg::Box::Ptr box_host = sfg::Box::Create();
+
+	sfg::Label::Ptr login_label = sfg::Label::Create();
+	login_label->SetText("Login");
+	login_label->SetRequisition(sf::Vector2f(100, 0));
+
+	sfg::Label::Ptr password_label = sfg::Label::Create();
+	password_label->SetText("Password");
+	password_label->SetRequisition(sf::Vector2f(100, 0));
+
+	sfg::Label::Ptr host_label = sfg::Label::Create();
+	host_label->SetText("Host");
+	host_label->SetRequisition(sf::Vector2f(100, 0));
+
+	login_entry->SetRequisition(sf::Vector2f(300, 0));
+	password_entry->SetRequisition(sf::Vector2f(300, 0));
+	host_entry->SetRequisition(sf::Vector2f(300, 0));
+
+	box_login->Pack(login_label);
+	box_login->Pack(login_entry, false, false);
+
+	box_password->Pack(password_label);
+	box_password->Pack(password_entry, false, false);
+
+	box_host->Pack(host_label);
+	box_host->Pack(host_entry, false, false);
+
+	box->Pack(box_host);
+	box->Pack(box_login);
+	box->Pack(box_password);
 	box->Pack(button);
+
 
 	sfgui_login_window->Add(box);
 	sfgui_login_window->SetRequisition(sf::Vector2f(SFML_MAIN_WINDOW_SIZE_WIDTH / 2 - SFML_LOGIN_WINDOW_SIZE_WIDTH / 2, SFML_MAIN_WINDOW_SIZE_HEIGHT/2 - SFML_LOGIN_WINDOW_SIZE_HEIGHT/2));
