@@ -4,8 +4,8 @@
 #define SFML_MAIN_WINDOW_SIZE_WIDTH 800
 #define SFML_MAIN_WINDOW_SIZE_HEIGHT 600
 
-#define SFML_LOGIN_WINDOW_SIZE_WIDTH 200
-#define SFML_LOGIN_WINDOW_SIZE_HEIGHT 150
+#define SFML_LOGIN_WINDOW_SIZE_WIDTH sfgui_login_window->GetAllocation().width
+#define SFML_LOGIN_WINDOW_SIZE_HEIGHT sfgui_login_window->GetAllocation().height
 
 
 #include <SFML/Graphics.hpp>

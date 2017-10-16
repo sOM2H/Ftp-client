@@ -18,6 +18,7 @@ void Ftp_client::init(){
 	
 	sfgui_login_window->SetStyle(sfg::Window::Style::BACKGROUND);
 	sfgui_login_window->SetRequisition(sf::Vector2f(SFML_LOGIN_WINDOW_SIZE_WIDTH, SFML_LOGIN_WINDOW_SIZE_HEIGHT));
+
 	
 	login_entry->SetText("Login");
 	login_entry->SetRequisition(sf::Vector2f());
@@ -44,9 +45,11 @@ void Ftp_client::init(){
 
 	sfgui_login_window->Add(box);
 	sfgui_login_window->SetRequisition(sf::Vector2f(SFML_MAIN_WINDOW_SIZE_WIDTH / 2 - SFML_LOGIN_WINDOW_SIZE_WIDTH / 2, SFML_MAIN_WINDOW_SIZE_HEIGHT/2 - SFML_LOGIN_WINDOW_SIZE_HEIGHT/2));
-	sfgui_login_window->SetPosition(sf::Vector2f(SFML_MAIN_WINDOW_SIZE_WIDTH / 2 - sfgui_login_window->GetRequisition().x/2, SFML_MAIN_WINDOW_SIZE_HEIGHT/2 - sfgui_login_window->GetRequisition().y/2));
+	//sfgui_login_window->SetPosition(sf::Vector2f(SFML_MAIN_WINDOW_SIZE_WIDTH / 2 - sfgui_login_window->GetRequisition().x/2, SFML_MAIN_WINDOW_SIZE_HEIGHT/2 - sfgui_login_window->GetRequisition().y/2));
 
 	desktop.Add(sfgui_login_window);
+	
+	sfml_main_window.setSize(sf::Vector2u(SFML_LOGIN_WINDOW_SIZE_WIDTH, SFML_LOGIN_WINDOW_SIZE_HEIGHT));
 }
 
 void Ftp_client::handle_events(){
@@ -83,6 +86,7 @@ void Ftp_client::init_ftp_connection(std::string login, std::string password, st
 			std::cout<< "Connect to server: " << host << ".\n" << "	Login: " << login << ".\n";
 			std::cout<<"########################\n\n";
 			state = "main";
+			sfml_main_window.setSize(sf::Vector2u(SFML_MAIN_WINDOW_SIZE_WIDTH, SFML_MAIN_WINDOW_SIZE_HEIGHT));
 			desktop.Add(sfgui_main_window);
 			desktop.BringToFront( sfgui_main_window ); 
 			return;
