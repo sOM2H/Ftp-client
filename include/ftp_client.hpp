@@ -36,8 +36,13 @@ class Ftp_client{
 		sfg::Entry::Ptr password_entry = sfg::Entry::Create();
 		sfg::Entry::Ptr host_entry = sfg::Entry::Create();
 
+		sfg::Label::Ptr status_label = sfg::Label::Create();
+
+
 		void init();
 		void init_ftp_connection(std::string, std::string, std::string);
+		void get_list_directory();
+		std::string  get_current_name_directory();
 		void handle_events();
 		void render(std::string);
 		void update();

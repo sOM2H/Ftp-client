@@ -45,6 +45,9 @@ void Ftp_client::init(){
 	sfg::Box::Ptr box_password = sfg::Box::Create();
 	sfg::Box::Ptr box_host = sfg::Box::Create();
 
+	//status_label->SetText("Status: ");
+	status_label->SetRequisition(sf::Vector2f(100, 0));
+
 	sfg::Label::Ptr login_label = sfg::Label::Create();
 	login_label->SetText("Login");
 	login_label->SetRequisition(sf::Vector2f(100, 0));
@@ -74,6 +77,7 @@ void Ftp_client::init(){
 	box->Pack(box_login);
 	box->Pack(box_password);
 	box->Pack(button);
+	box->Pack(status_label);
 
 
 	sfgui_login_window->Add(box);
@@ -111,6 +115,7 @@ void Ftp_client::close(){
 }
 
 void Ftp_client::init_ftp_connection(std::string login, std::string password, std::string host){
+	status_label->SetText("Status: Connecting...");
 	sf::Ftp::Response response_connect = ftp.connect(host, 21, sf::seconds(5));
    	if(response_connect.isOk()){
 		sf::Ftp::Response response_login  = ftp.login(login, password );
@@ -122,14 +127,33 @@ void Ftp_client::init_ftp_connection(std::string login, std::string password, st
 			sfml_main_window.setSize(sf::Vector2u(SFML_MAIN_WINDOW_SIZE_WIDTH, SFML_MAIN_WINDOW_SIZE_HEIGHT));
 			desktop.Add(sfgui_main_window);
 			desktop.BringToFront( sfgui_main_window ); 
-			return;
+			std::cout<<"Current directory: "<< get_current_name_directory() << "\n";
+			get_list_directory();
 		}else{
+			status_label->SetText("Status: Login Error.");
 			std::cout<< "Login Error.\n\n";
 
 		}
 	}else{
+		status_label->SetText("Status: Connect Error.");
 		std::cout<< "Connect Error.\n\n";
 	}	
 	ftp.disconnect();
 }
 
+std::string Ftp_client::get_current_name_directory(){
+	sf::Ftp::DirectoryResponse directory_response = ftp.getWorkingDirectory();
+	if(directory_response.isOk()){
+		return directory_response.getDirectory();
+	}
+}
+
+void  Ftp_client::get_list_directory(){
+	sf::Ftp::ListingResponse listing_response = ftp.getDirectoryListing();
+	if(listing_response.isOk()){
+		const std::vector<std::string>& listing = listing_response.getListing();
+		for (std::vector<std::string>::const_iterator it = listing.begin(); it != listing.end(); ++it)
+			//sf::Text text(ftp.getDirectoryListing(auto respone), font);
+			std::cout << "- " << *it << std::endl;
+	}
+} 
